@@ -90,15 +90,15 @@ const App = () => {
             <Hero />
 
             {/* SECTION 02: CORE CAPABILITIES (REPLACED PLACEHOLDER) */}
-            <FluidHeader title="Core Capabilities" />
+            {/* <FluidHeader title="Core Capabilities" /> */}
             <Inventory />
 
             {/* SECTION 03: MISSION ARCHIVES (Next Section) */}
-            <FluidHeader id="experience" title="Mission Archives" />
+            {/* <FluidHeader id="experience" title="Mission Archives" /> */}
             <MissionArchives />
 
             {/* SECTION 04: BASIC PROJECTS */}
-            <FluidHeader id="prototypes" title="Lab Prototypes" />
+            {/* <FluidHeader id="prototypes" title="Lab Prototypes" /> */}
             <LabPrototypes />
 
             {/* SECTION 05: ACHIEVEMENTS */}
