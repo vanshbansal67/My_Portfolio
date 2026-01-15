@@ -1,0 +1,119 @@
+/* 1. EXTERNAL IMPORTS */
+/* Imports must be at the very top of the file */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+/* 2. THEME CONFIGURATION */
+@theme {
+  --color-primary: #FF3E3E;
+  --color-bg: #050505;
+
+  --font-gaming: 'Orbitron', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* 3. BASE STYLES & RESET */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #050505;
+  }
+
+  body {
+    background-color: #050505;
+    color: white;
+    overflow-x: hidden;
+    /* Custom cursor is enabled globally */
+    cursor: none;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Global selection color to match theme */
+  ::selection {
+    background-color: #FF3E3E;
+    color: white;
+  }
+}
+
+/* 4. CUSTOM UTILITY CLASSES & GAMING EFFECTS */
+@layer components {
+
+  /* Text Effects */
+  .glitch-text {
+    text-shadow: 2px 0 #fff, -2px 0 #FF3E3E;
+    letter-spacing: -2px;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px rgba(255, 62, 62, 0.5);
+  }
+
+  /* Backgrounds & Cards */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+      linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Hardware Acceleration for smooth scrolling */
+  main,
+  section {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+    position: relative;
+    width: 100%;
+    z-index: 10;
+    background-color: #050505;
+  }
+}
+
+/* 5. GLOBAL SCROLLBAR CUSTOMIZATION */
+/* Chrome, Safari, and Edge */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 62, 62, 0.3);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF3E3E;
+  box-shadow: 0 0 10px #FF3E3E;
+}
+
+/* Firefox Support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #FF3E3E #050505;
+}
+
+/* 6. COMPONENT SPECIFIC SCROLLBARS */
+/* Specifically for the Mission Archives project list */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #FF3E3E;
+  box-shadow: 0 0 5px #FF3E3E;
+}
