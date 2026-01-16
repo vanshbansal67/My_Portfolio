@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Eye, Terminal, Box } from 'lucide-react';
+import { Code, Eye, Terminal, Box, ChevronLeft, ChevronRight } from 'lucide-react';
+// import { GlitchHeading } from '../components/GlitchHeading'; // Ensure this path is correct
+import { GlitchHeading } from '../../components/GlitchHeading';
 
 const labPrototypes = [
     {
@@ -46,38 +48,41 @@ const labPrototypes = [
   ];
 
 export const LabPrototypes = () => {
-  const [activeProto, setActiveProto] = useState(labPrototypes[0]);
+  const [index, setIndex] = useState(0);
+  const activeProto = labPrototypes[index];
+    const [glitchKey, setGlitchKey] = useState(0); // Trigger state
+  
+
+  const nextProto = () => setIndex((prev) => (prev + 1) % labPrototypes.length);
+  const prevProto = () => setIndex((prev) => (prev - 1 + labPrototypes.length) % labPrototypes.length);
 
   return (
-    <section id="prototypes" className="min-h-screen w-full bg-[#050505] flex flex-col p-6 md:p-20 overflow-hidden border-t border-white/5">
+    <section id="prototypes" className="min-h-auto w-full bg-[#050505] flex flex-col p-4 md:p-20 overflow-hidden border-t border-white/5">
       
-      {/* ELITE STYLE HEADER INTEGRATION */}
-      <div className="max-w-7xl mx-auto w-full mb-12">
-        <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.6 }}
-          className="border-l-4 border-[#FF3E3E] pl-6"
+      {/* ELITE STYLE HEADER with Glitch & Responsive Scale */}
+      <div className="max-w-7xl mx-auto w-full mb-8 md:mb-12">
+      <motion.div 
+          onViewportEnter={() => setGlitchKey(prev => prev + 1)} // Trigger on scroll
+          className="border-l-4 border-[#FF3E3E] pl-4 md:pl-6"
         >
-          <h2 className="text-5xl md:text-7xl font-gaming font-black text-white uppercase tracking-tighter italic leading-none">
-            Lab_Prototypes
+          <h2 className="text-[clamp(1.8rem,5vw,4.5rem)] font-gaming font-black text-white uppercase tracking-tighter italic leading-none">
+            <GlitchHeading text="Lab_Prototypes" trigger={glitchKey}/>
           </h2>
-          <p className="font-mono text-[#FF3E3E] tracking-[0.4em] text-xs mt-2 uppercase">
+          <p className="font-mono text-[#FF3E3E] tracking-[0.2em] md:tracking-[0.4em] text-[10px] md:text-xs mt-2 uppercase opacity-80">
             // EXPERIMENTAL_BUILDS // CODE_SANDBOX_v4.0
           </p>
         </motion.div>
       </div>
 
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col">
-        {/* UPPER SECTION: Project Selection List */}
-        <div className="flex gap-4 overflow-x-auto pb-6 custom-scrollbar">
-          {labPrototypes.map((proto) => (
+        {/* UPPER SECTION: Project Selection List (Desktop Only) */}
+        <div className="hidden md:flex gap-4 overflow-x-auto pb-6 custom-scrollbar">
+          {labPrototypes.map((proto, i) => (
             <button
               key={proto.id}
-              onClick={() => setActiveProto(proto)}
+              onClick={() => setIndex(i)}
               className={`group relative min-w-[280px] border p-6 flex flex-col justify-between transition-all cursor-target ${
-                activeProto.id === proto.id 
+                index === i 
                 ? "border-[#FF3E3E] bg-[#FF3E3E]/5" 
                 : "border-white/5 bg-white/[0.02] hover:border-white/20"
               }`}
@@ -85,10 +90,10 @@ export const LabPrototypes = () => {
               <div>
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-[10px] font-mono text-gray-500 tracking-tighter uppercase">{proto.subtitle}</span>
-                  <Box size={14} className={activeProto.id === proto.id ? "text-[#FF3E3E]" : "text-gray-700"} />
+                  <Box size={14} className={index === i ? "text-[#FF3E3E]" : "text-gray-700"} />
                 </div>
                 <h3 className={`text-xl font-gaming uppercase tracking-tighter transition-colors ${
-                  activeProto.id === proto.id ? "text-white" : "text-white/40 group-hover:text-white"
+                  index === i ? "text-white" : "text-white/40 group-hover:text-white"
                 }`}>
                   {proto.title}
                 </h3>
@@ -100,76 +105,92 @@ export const LabPrototypes = () => {
                 ))}
               </div>
 
-              {/* Elite Targeting Accents */}
               <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-[#FF3E3E] scale-0 group-hover:scale-100 transition-transform origin-top-right" />
               <div className="absolute bottom-0 left-0 w-1.5 h-1.5 bg-[#FF3E3E] scale-0 group-hover:scale-100 transition-transform origin-bottom-left" />
             </button>
           ))}
         </div>
 
-        {/* LOWER SECTION: Detailed Briefing */}
-        <div className="flex-1 mt-6 glass-card border border-white/10 bg-white/[0.02] p-10 relative overflow-hidden flex flex-col md:flex-row gap-10">
-          {/* Elite Vertical Accent Line */}
+        {/* LOWER SECTION: Detailed Briefing (Carousel-ready for Mobile) */}
+        <div className="flex-1 mt-0 md:mt-6 glass-card border border-white/10 bg-white/[0.02] p-6 md:p-10 relative overflow-hidden flex flex-col md:flex-row gap-10 min-h-[480px] md:min-h-0">
           <div className="hidden md:block w-[1px] h-full bg-gradient-to-b from-[#FF3E3E] to-transparent opacity-40" />
                
           <AnimatePresence mode="wait">
             <motion.div
               key={activeProto.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.4 }}
               className="flex-1 flex flex-col justify-between"
             >
               <div>
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-                  <div>
-                    <h2 className="text-4xl md:text-6xl font-gaming font-black text-white uppercase italic tracking-tighter">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6 md:mb-8">
+                  <div className="overflow-hidden">
+                    <h3 className="text-2xl md:text-6xl font-gaming font-black text-white uppercase italic tracking-tighter truncate">
                       {activeProto.title}
-                    </h2>
-                    <div className="flex items-center gap-2 mt-3">
-                      <Terminal size={14} className="text-[#FF3E3E]" />
-                      <span className="text-gray-500 font-mono text-[10px] tracking-[0.3em] uppercase opacity-70">Status: Prototype_Stable</span>
+                    </h3>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Terminal size={12} className="text-[#FF3E3E]" />
+                      <span className="text-gray-500 font-mono text-[9px] md:text-[10px] tracking-[0.2em] uppercase opacity-70">Status: Prototype_Stable</span>
                     </div>
                   </div>
 
-                  {/* Action Links with Elite Styling */}
-                  <div className="flex gap-4">
+                  <div className="flex gap-3">
                     <motion.a 
-                      href={activeProto.liveUrl}  target='_blank'
-                      whileHover={{ y: -2 }}
-                      className="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 text-[10px] font-gaming text-white uppercase tracking-widest hover:border-[#FF3E3E] hover:text-[#FF3E3E] transition-all"
+                      href={activeProto.liveUrl} target='_blank' rel="noreferrer"
+                      whileTap={{ scale: 0.95 }}
+                      className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-gaming text-white uppercase tracking-widest hover:border-[#FF3E3E] transition-all"
                     >
-                      <Eye size={16} /> PREVIEW_LIVE
+                      <Eye size={14} /> PREVIEW
                     </motion.a>
                     <motion.a 
-                      href={activeProto.codeUrl} target='_blank'
-                      whileHover={{ y: -2 }}
-                      className="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 text-[10px] font-gaming text-white uppercase tracking-widest hover:border-[#FF3E3E] hover:text-[#FF3E3E] transition-all"
+                      href={activeProto.codeUrl} target='_blank' rel="noreferrer"
+                      whileTap={{ scale: 0.95 }}
+                      className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-gaming text-white uppercase tracking-widest hover:border-[#FF3E3E] transition-all"
                     >
-                      <Code size={16} /> GET_SOURCE
+                      <Code size={14} /> SOURCE
                     </motion.a>
                   </div>
                 </div>
 
-                <p className="text-gray-400 font-mono text-sm md:text-base leading-relaxed max-w-4xl border-l-2 border-[#FF3E3E] pl-8 mb-10 py-2 bg-white/[0.01]">
+                <p className="text-gray-400 font-mono text-[11px] md:text-base leading-relaxed max-w-4xl border-l-2 border-[#FF3E3E] pl-4 md:pl-8 mb-8 py-1">
                   {activeProto.details}
                 </p>
               </div>
 
-              {/* Technical Signature */}
-              <div className="flex justify-between items-end border-t border-white/5 pt-6">
+              {/* MOBILE CAROUSEL CONTROLS */}
+              <div className="flex md:hidden items-center justify-between mt-auto pt-6 border-t border-white/5">
+                <button 
+                  onClick={prevProto} 
+                  className="flex items-center gap-2 bg-[#FF3E3E] text-white px-4 py-3 text-[10px] font-gaming uppercase italic active:scale-95"
+                >
+                  <ChevronLeft size={14} /> Previous
+                </button>
+                <div className="text-[10px] font-mono text-gray-500 font-bold uppercase">
+                  Log_{index + 1}/0{labPrototypes.length}
+                </div>
+                <button 
+                  onClick={nextProto} 
+                  className="flex items-center gap-2 bg-white/5 border border-white/10 text-white px-4 py-3 text-[10px] font-gaming uppercase italic active:scale-95"
+                >
+                  Next <ChevronRight size={14} />
+                </button>
+              </div>
+
+              {/* Technical Signature (Desktop Meta) */}
+              <div className="hidden sm:flex justify-between items-end border-t border-white/5 pt-6 mt-4">
                  <div className="flex gap-10">
                     <div className="flex flex-col gap-1">
-                      <span className="text-[9px] font-mono text-gray-600 uppercase tracking-tighter">Encryption_Hash</span>
-                      <span className="text-xs font-mono text-white/70">SHA-512_SECURE</span>
+                      <span className="text-[8px] font-mono text-gray-600 uppercase">Encryption_Hash</span>
+                      <span className="text-[10px] font-mono text-white/70 uppercase">SHA-512_SECURE</span>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <span className="text-[9px] font-mono text-gray-600 uppercase tracking-tighter">System_Stability</span>
-                      <span className="text-xs font-mono text-[#FF3E3E]">STABLE_98.4%</span>
+                      <span className="text-[8px] font-mono text-gray-600 uppercase">Stability</span>
+                      <span className="text-[10px] font-mono text-[#FF3E3E]">STABLE_98.4%</span>
                     </div>
                  </div>
-                 <span className="text-[9px] font-mono text-gray-800 tracking-widest">USER_ID: VANSHAJ_BANSAL // MODULE_ARCHIVE</span>
+                 <span className="text-[8px] font-mono text-gray-800 tracking-widest uppercase italic">Lab_Module_04 // Access_Granted</span>
               </div>
             </motion.div>
           </AnimatePresence>
