@@ -36,8 +36,9 @@ export const Hero = () => {
         <div className="relative group cursor-target">
           <div className="absolute -inset-2 border border-[#FF3E3E]/30 group-hover:border-[#FF3E3E] transition-colors duration-500 animate-pulse" />
           <img 
-            src="/images/profile.png" 
-            alt="Profile" 
+            src="/images/vanshaj-bansal-frontend-developer.png" 
+            alt="Vanshaj Bansal - Frontend Developer and UI Architect" 
+            title="Vanshaj Bansal Profile"
             className="w-48 h-48 md:w-48 md:h-48 object-cover grayscale-0 md:grayscale md:group-hover:grayscale-0 transition-all duration-500 border border-white/10"
           />
           <div className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-[#FF3E3E]" />
